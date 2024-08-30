@@ -1,35 +1,21 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+# Dependências do Node
+/node_modules/
 
-# dependencies
-node_modules/
+# Build de projetos nativos
+/android/
+/ios/
 
-# Expo
+# Arquivos e pastas temporários
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Configurações de IDE
+/.vscode/
+/.idea/
+/*.iml
+
+# Outras configurações específicas
 .expo/
-dist/
-web-build/
-
-# Native
-*.orig.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
-
-# Metro
-.metro-health-check*
-
-# debug
-npm-debug.*
-yarn-debug.*
-yarn-error.*
-
-# macOS
-.DS_Store
-*.pem
-
-# local env files
-.env*.local
-
-# typescript
-*.tsbuildinfo
+.expo-shared/

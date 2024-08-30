@@ -1,40 +1,86 @@
-import { StatusBar } from "expo-status-bar";
+import React, { useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
-  Image,
-  FlatList,
   TouchableOpacity,
+  StatusBar,
+  Alert,
+  Button,
+  Image
 } from "react-native";
-import React, { useState } from "react";
+import { CameraView, CameraType, useCameraPermissions, CameraPictureOptions,  } from "expo-camera";
 import Navbar from "../components/Nav";
-import { Camera, useCameraDevices } from "react-native-vision-camera";
 
 export default function Home() {
-    const [hasPermission, setHasPermission] = useState(false);
-  const devices = useCameraDevices();
-  const device = devices.find((device) => device.position === "back");
+  const [facing, setFacing] = useState<CameraType>("back");
+  const [cameraBlocked, setCameraBlocked] = useState(true)
+  const [permission, requestPermission] = useCameraPermissions();
+  const cameraRef = useRef<any>(null);
+  const [capturedImg, setCapturedImg] = useState(null);
 
-  // Função para abrir a câmera
-  const openCamera = () => {
-    // Aqui você pode adicionar a lógica para abrir a câmera
-    console.log("Câmera aberta!");
+  if (!permission) {
+    return <View />;
+  }
+
+  if (!permission.granted) {
+    return (
+      <View style={styles.permissionContainer}>
+        <Text style={styles.message}>
+          O VerboVision precisa da sua permissão para usar a câmera.
+        </Text>
+        <Button onPress={requestPermission} title="Dar permissão" />
+      </View>
+    );
+  }
+
+  const takePicture = async () => {
+    if (cameraRef.current) {
+      try {
+        const options = { quality: 0.5, base64: true }; 
+        const data = await cameraRef.current.takePictureAsync()
+        // Handle the captured image data here (data.uri or data.base64)
+        console.log(data); 
+        setCapturedImg(data.uri)
+      } catch (error) {
+        console.error(error);
+        Alert.alert('Error', 'An error occurred while taking the picture.');
+      }
+    }
   };
+
+  function toggleCameraFacing() {
+    setFacing((current) => (current === "back" ? "front" : "back"));
+  }
 
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar />
       <Navbar title="VerboVision" onBackPress={() => alert("Voltar")} />
-      {device != null ? (
-        <Camera style={styles.camera} device={device} isActive={true} />
-      ) : (
-        <Text>Carregando a câmera...</Text>
+
+      <CameraView style={styles.camera} facing={facing} onCameraReady={() => {
+        setCameraBlocked(false)
+      }} ref={cameraRef}>
+        <View></View>
+      </CameraView>
+
+      {capturedImg && (
+        <Image
+          source={{ uri: capturedImg }}
+          style={styles.photo}
+        />
       )}
 
-      <TouchableOpacity style={styles.circleButton} onPress={openCamera}>
-        <Text style={styles.buttonText}>📷</Text>
-      </TouchableOpacity>
+
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+          <Text style={styles.text}>Flip Camera</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.circleButton} onPress={takePicture} disabled={cameraBlocked} >
+          <Text style={styles.buttonText}>📷</Text>
+        </TouchableOpacity>
+      </View>
+      
     </View>
   );
 }
@@ -44,24 +90,57 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#25292e",
     alignItems: "center",
+    justifyContent: "space-between",
+  },
+  photo: {
+    flex: 3,
+    width: "100%",
+    resizeMode: "cover",
+    marginVertical: 10,
+  },
+  permissionContainer: {
+    flex: 1,
+    backgroundColor: "#25292e",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  message: {
+    textAlign: "center",
+    padding: 10,
+    color: "white",
   },
   camera: {
+    flex: 10,
     width: "100%",
-    height: "100%",
-    position: "absolute",
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    margin: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+  },
+  button: {
+    flex: 1,
+    alignSelf: "flex-end",
+    alignItems: "center",
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#FFFFFF",
   },
   circleButton: {
-    width: 70, // Largura do botão
-    height: 70, // Altura do botão
-    borderRadius: 35, // Metade da largura/altura para torná-lo circular
-    backgroundColor: "#6200EE", // Cor de fundo do botão
-    justifyContent: "center", // Centraliza o conteúdo dentro do botão
-    alignItems: "center", // Centraliza horizontalmente
-    position: "absolute", // Para posicionar o botão onde desejar
-    bottom: 30, // Distância do fundo da tela
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: "#6200EE",
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonText: {
-    fontSize: 24, // Tamanho do ícone ou texto no botão
-    color: "#FFFFFF", // Cor do texto
+    fontSize: 24,
+    color: "#FFFFFF",
   },
 });
