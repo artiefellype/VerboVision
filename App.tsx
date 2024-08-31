@@ -1,11 +1,6 @@
 import React from "react";
-import Home from "./src/screens/Home";
-import { StatusBar } from "expo-status-bar";
+import AppNavigator from "./AppNavigator";
 
 export default function App() {
-  return (
-    <>
-    <Home></Home>
-    </>
-  );
+  return <AppNavigator />;
 }
