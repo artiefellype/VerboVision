@@ -4,11 +4,14 @@ import React from "react";
 import Navbar from "../components/Nav";
 import { HistoryList } from "../components/HistoryList";
 
-export default function History() {
+export default function History({ navigation }: any) {
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
-      <Navbar title="VerboVision" onBackPress={() => alert("Voltar")} />
+      <Navbar
+        title="VerboVision"
+        onBackPress={() => navigation.navigate("Home")}
+        onMenuPress={() => {}}
+      />
       <HistoryList />
     </View>
   );
