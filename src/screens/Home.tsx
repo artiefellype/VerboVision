@@ -7,17 +7,27 @@ import {
   StatusBar,
   Alert,
   Button,
-  Image
+  Image,
 } from "react-native";
-import { CameraView, CameraType, useCameraPermissions, CameraPictureOptions,  } from "expo-camera";
+import {
+  CameraView,
+  CameraType,
+  useCameraPermissions,
+  CameraPictureOptions,
+} from "expo-camera";
 import Navbar from "../components/Nav";
 
-export default function Home() {
+export default function Home({ navigation }: any) {
   const [facing, setFacing] = useState<CameraType>("back");
-  const [cameraBlocked, setCameraBlocked] = useState(true)
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<any>(null);
   const [capturedImg, setCapturedImg] = useState(null);
+
+  useEffect(() => {
+    if (!permission?.granted) {
+      requestPermission();
+    }
+  }, [permission]);
 
   if (!permission) {
     return <View />;
@@ -37,14 +47,15 @@ export default function Home() {
   const takePicture = async () => {
     if (cameraRef.current) {
       try {
-        const options = { quality: 0.5, base64: true }; 
-        const data = await cameraRef.current.takePictureAsync()
+        const options = { quality: 0.5, base64: true };
+        const data = await cameraRef.current.takePictureAsync();
         // Handle the captured image data here (data.uri or data.base64)
-        console.log(data); 
-        setCapturedImg(data.uri)
+        console.log(data);
+        setCapturedImg(data.uri);
+        navigation.navigate("ReadImage", { imgUri: data.uri });
       } catch (error) {
         console.error(error);
-        Alert.alert('Error', 'An error occurred while taking the picture.');
+        Alert.alert("Error", "An error occurred while taking the picture.");
       }
     }
   };
@@ -56,31 +67,24 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <StatusBar />
-      <Navbar title="VerboVision" onBackPress={() => alert("Voltar")} />
+      <Navbar
+        title="VerboVision"
+        onBackPress={() => {}}
+        onMenuPress={() => navigation.navigate("History")}
+      />
 
-      <CameraView style={styles.camera} facing={facing} onCameraReady={() => {
-        setCameraBlocked(false)
-      }} ref={cameraRef}>
+      <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
         <View></View>
       </CameraView>
-
-      {capturedImg && (
-        <Image
-          source={{ uri: capturedImg }}
-          style={styles.photo}
-        />
-      )}
-
 
       <View style={styles.buttonsContainer}>
         <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
           <Text style={styles.text}>Flip Camera</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.circleButton} onPress={takePicture} disabled={cameraBlocked} >
+        <TouchableOpacity style={styles.circleButton} onPress={takePicture}>
           <Text style={styles.buttonText}>📷</Text>
         </TouchableOpacity>
       </View>
-      
     </View>
   );
 }
