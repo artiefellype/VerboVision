@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     margin: 30,
     paddingRight: 20,
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
     gap: 20,
     flex: 1,
