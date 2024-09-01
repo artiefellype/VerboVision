@@ -19,3 +19,5 @@
 # Outras configurações específicas
 .expo/
 .expo-shared/
+
+.env
