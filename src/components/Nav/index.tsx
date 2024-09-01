@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // Ou use react-native-vector-icons
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const Navbar = ({ title, onBackPress, onMenuPress }) => {
   return (
@@ -10,7 +10,7 @@ const Navbar = ({ title, onBackPress, onMenuPress }) => {
       </TouchableOpacity>
 
       <TouchableOpacity onPress={onMenuPress}>
-        <Ionicons name="menu" size={24} color="white" />
+      <Icon name="file" size={20} color="#fafafa" />
       </TouchableOpacity>
     </View>
   );
