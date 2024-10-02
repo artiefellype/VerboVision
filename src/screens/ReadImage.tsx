@@ -52,7 +52,7 @@ export default function ReadImage({ route, navigation }: any) {
     );
 
     const data = await response.json();
-    const audioBase64 = data.audioContent; 
+    const audioBase64 = data.audioContent;
 
     const fileUri = `${FileSystem.documentDirectory}audio.mp3`;
 
@@ -149,11 +149,11 @@ export default function ReadImage({ route, navigation }: any) {
 
   useEffect(() => {
     const processImage = async () => {
-      if (imgUri) { 
+      if (imgUri) {
         const recognizedText = await textRecognition(imgUri);
         setTextRecognized(recognizedText || "Nenhum texto encontrado");
         setLoading(false);
-  
+
         if (recognizedText) {
           const audioUri = await gerarAudio(recognizedText);
           setAudioContent(audioUri || null);
@@ -163,7 +163,7 @@ export default function ReadImage({ route, navigation }: any) {
         setLoading(false);
       }
     };
-  
+
     processImage();
   }, [imgUri]);
 
@@ -188,17 +188,22 @@ export default function ReadImage({ route, navigation }: any) {
         )}
       </View>
 
-      <View>
-        <Button
-          title="Reproduzir Áudio"
+      <View style={styles.audioButtonsContainer}>
+        <TouchableOpacity
+          style={styles.playButton}
           onPress={playSound}
           disabled={isPlaying}
-        />
-        <Button
-          title="Parar Áudio"
+        >
+          <Text style={styles.audioButtonText}>▶️</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.stopButton}
           onPress={stopSound}
           disabled={!isPlaying}
-        />
+        >
+          <Text style={styles.audioButtonText}>⏸️</Text>
+        </TouchableOpacity>
       </View>
 
       <TouchableOpacity
@@ -255,6 +260,38 @@ const styles = StyleSheet.create({
     backgroundColor: "#6200EE",
     justifyContent: "center",
     alignItems: "center",
+  },
+  playButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: "#6200EE",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 20,
+  },
+  stopButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: "#EE0000",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  audioButtonText: {
+    fontSize: 18,
+    color: "#fafafa",
+    textAlign: "center",
+  },
+  audioButtonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 20,
   },
   loadingContainer: {
     flex: 1,
