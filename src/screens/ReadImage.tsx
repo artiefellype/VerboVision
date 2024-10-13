@@ -194,7 +194,7 @@ export default function ReadImage({ route, navigation }: any) {
           onPress={playSound}
           disabled={isPlaying}
         >
-          <Text style={styles.audioButtonText}>▶️</Text>
+          <Icon name="play" size={45} color="#fafafa" style={styles.audioButtonText} />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -202,18 +202,16 @@ export default function ReadImage({ route, navigation }: any) {
           onPress={stopSound}
           disabled={!isPlaying}
         >
-          <Text style={styles.audioButtonText}>⏸️</Text>
+          <Icon name="stop" size={45} color="#fafafa" style={styles.audioButtonText} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.navigate("Home")}
+        >
+            <Icon name="arrow-left" size={45} color="#fafafa"  style={styles.audioButtonText}/>
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Home")}
-      >
-        <Text style={styles.text}>
-          <Icon name="arrow-left" size={30} color="#fafafa" />
-        </Text>
-      </TouchableOpacity>
     </View>
   );
 }
@@ -223,67 +221,68 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#25292e",
     alignItems: "center",
+    alignContent: "center",
   },
   contentContainer: {
     flex: 1,
-    width: "100%",
     flexDirection: "column",
     alignItems: "flex-start",
     padding: 20,
+    backgroundColor:"#F4EEEE",
+    marginTop: 20,
+    marginLeft: 40,
+    marginRight: 40,
+    borderRadius:5,
   },
   photo: {
-    width: 250,
-    height: 300,
-    resizeMode: "contain",
+    width: 350,
+    height: 400,
+    resizeMode: "cover",
     marginBottom: 20,
   },
   textContainer: {
     flex: 1,
     width: "100%",
-    padding: 20,
   },
   text: {
     fontSize: 18,
-    color: "#FFFFFF",
+    color: "#5B5151",
     fontWeight: "bold",
     textAlign: "left",
   },
-  button: {
-    position: "absolute",
-    bottom: 30,
-    right: 30,
+  backButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
-    width: 100,
-    height: 100,
-    borderRadius: 55,
-    backgroundColor: "#6200EE",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  playButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    width: 120,
-    height: 120,
+    width: 90,
+    height: 90,
     borderRadius: 60,
     backgroundColor: "#6200EE",
     justifyContent: "center",
     alignItems: "center",
     marginRight: 20,
   },
+  playButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    width: 90,
+    height: 90,
+    borderRadius: 60,
+    backgroundColor: "#208324",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   stopButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
-    width: 120,
-    height: 120,
+    width: 90,
+    height: 90,
     borderRadius: 60,
-    backgroundColor: "#EE0000",
+    backgroundColor: "#A71F1F",
     justifyContent: "center",
     alignItems: "center",
   },
   audioButtonText: {
-    fontSize: 18,
+    fontSize: 40,
     color: "#fafafa",
     textAlign: "center",
   },
@@ -291,7 +290,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    gap:25,
     marginTop: 20,
+    marginBottom: 20,
   },
   loadingContainer: {
     flex: 1,
@@ -299,10 +300,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     height: "100%",
+    margin: "auto"
   },
   loadingText: {
     fontSize: 18,
-    color: "#FFFFFF",
+    color: "#5B5151",
     marginTop: 10,
   },
 });
