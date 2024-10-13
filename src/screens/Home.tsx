@@ -71,9 +71,11 @@ export default function Home({ navigation }: any) {
         onMenuPress={() => navigation.navigate("History")}
       />
 
-      <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
-        <View></View>
-      </CameraView>
+      <View style={styles.cameraContainer}>
+        <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
+          <View></View>
+        </CameraView>
+      </View>
 
       <View style={styles.buttonsContainer}>
         <TouchableOpacity style={styles.circleButton} onPress={takePicture}>
@@ -121,9 +123,15 @@ const styles = StyleSheet.create({
   camera: {
     flex: 8,
     width: 340,
-    marginTop: 20,
     borderRadius: 30, // Bordas arredondadas
     overflow: "hidden",
+  },
+  cameraContainer: {
+    flex: 8,
+    marginTop: 20,
+    borderRadius: 30, // Bordas arredondadas
+    padding: 20,// Bordas arredondadas
+    backgroundColor: "#F4EEEE",
   },
   buttonsContainer: {
     width: "100%",
