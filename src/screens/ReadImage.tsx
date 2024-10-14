@@ -182,9 +182,12 @@ export default function ReadImage({ route, navigation }: any) {
             <Text style={styles.loadingText}>Processando imagem...</Text>
           </View>
         ) : (
-          <ScrollView style={styles.textContainer}>
+          <View style={styles.loadingContainer}>
+            <ScrollView style={styles.textContainer}>
             <Text style={styles.text}>{textRecognized}</Text>
           </ScrollView>
+          </View>
+          
         )}
       </View>
 
@@ -242,7 +245,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
-    width: "100%",
+    width: 320,
   },
   text: {
     fontSize: 18,

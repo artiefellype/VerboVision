@@ -9,9 +9,9 @@ const Navbar = ({ title, onBackPress, onMenuPress }) => {
         <Text style={styles.title}>{title}</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={onMenuPress}>
+      {/* <TouchableOpacity onPress={onMenuPress}>
       <Icon name="file" size={20} color="#fafafa" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
